@@ -1,4 +1,4 @@
-// Require Mongoose
+// Require Schema and Model
 const { Schema, model } = require("mongoose");
 
 // Set up the User Schema
@@ -31,7 +31,7 @@ const UserSchema = new Schema({
       // Needs to show an array of _id values referencing the Thought model
 
   },
-  
+
   friends: {
       // Needs of _id values referencing the User model (self-reference)
   }
