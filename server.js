@@ -6,7 +6,7 @@ const mongoose = require("mongoose");
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-const { Reaction, Thought, User } = require("./models");
+const { User } = require("./models");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());

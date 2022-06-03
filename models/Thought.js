@@ -10,8 +10,8 @@ const ThoughtSchema = new Schema({
     type: String,
     // We want a requirement message
     required: "Please input thought text!",
-  
-    // NEED TO CONFIRM // 
+
+    // NEED TO CONFIRM //
     // At least 1 character
     minlength: 1,
     // At most 280 characters
@@ -36,3 +36,7 @@ const ThoughtSchema = new Schema({
     // TODO: Array of nested documents created with the reactionSchema
   },
 });
+
+const Thought = model("Thought", ThoughtSchema);
+
+module.exports = Thought;

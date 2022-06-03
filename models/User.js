@@ -28,14 +28,17 @@ const UserSchema = new Schema({
     match: [/.+\@.+\..+/, "Please input a valid email address!"],
   },
   thoughts: {
-      // Needs to show an array of _id values referencing the Thought model
-
+    // Needs to show an array of _id values referencing the Thought model
   },
 
   friends: {
-      // Needs of _id values referencing the User model (self-reference)
-  }
+    // Needs of _id values referencing the User model (self-reference)
+  },
 
   // CREATE A VIRTUAL
   // friendCount that retrieves the length of the user's friends array field on query
 });
+
+const User = model("User", UserSchema);
+
+module.exports = User;
