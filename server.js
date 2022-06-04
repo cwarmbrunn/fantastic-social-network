@@ -104,6 +104,31 @@ app.delete("api/users/:id", ({ params }, res) => {
     })
     .catch((err) => res.json(err));
 });
+// ROUTE #5 - END //
+
+// FRIEND ROUTES START //
+
+// ROUTE #6 - Add a new friend to a user's friends list //
+
+app.post("/api/users/:userId/friends/:friendId", ({body}, res)=>{
+    // Create the new friend 
+});
+
+// ROUTE #6 - END //
+
+// ROUTE #7 - Remove a friend from a user's friend's list //
+app.delete("/api/users/:userId/friends/:friendId", ({params}, res)=>{
+    // Use the findByIdAndDelete() method
+    // Not sure if this is accurate - need to confirm
+    User.findByIdAndDelete
+})
+// ROUTE #7 - END // 
+
+// FRIEND ROUTES END //
+
+// THOUGHT ROUTES START //
+
+// THOUGHT ROUTES END //
 // Set up App Listener
 app.listen(PORT, () => {
   console.log(`App running on port ${PORT}!🚀`);
