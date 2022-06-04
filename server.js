@@ -6,7 +6,7 @@ const mongoose = require("mongoose");
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-const { User } = require("./models");
+const { User, Thought } = require("./models");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -125,7 +125,7 @@ app.delete("/api/users/:userId/friends/:friendId", ({ params }, res) => {
       res.status(404).json({ message: "No user found with that ID!" });
       return;
     }
-    res.json;
+    res.json(dbUserInfo);
   });
 });
 // ROUTE #7 - END //
@@ -136,14 +136,51 @@ app.delete("/api/users/:userId/friends/:friendId", ({ params }, res) => {
 
 // ROUTE #8 - Get ALL Thoughts //
 
+app.get("/api/thoughts", (req, res) => {
+  // Use the find() method to get all of the thoughts
+
+  Thought.find()
+    .then((dbUserInfo) => {
+      // Conditional if information is not found
+      if (!dbUserInfo) {
+        res.status(404).json({ message: "No thoughts found - head empty!" });
+        return;
+      }
+      res.json(dbUserInfo);
+    })
+    .catch((err) => res.json(err));
+});
+
 // ROUTE #8 - END //
 
 // ROUTE #9 - Get a single thought by its id //
-
+app.get("/api/thoughts/:id", ({ params }, res) => {
+  // Use the findOne() method
+  Thought.findOne({ _id: params.id })
+    .then((dbUserInfo) => {
+      if (!dbUserInfo) {
+        res.status(404).json({ message: "Nothing was found!" });
+        return;
+      }
+      res.json(dbUserInfo);
+    })
+    .catch((err) => res.json(err));
+});
 // ROUTE #9 - END //
 
 // ROUTE #10 - Create a new thought //
-
+app.post("/api/thoughts", ({ body }, res) => {
+  // Create the Thought
+  Thought.create(body)
+    .then((dbUserInfo) => {
+      if (!dbUserInfo) {
+        res.status(404).json({ message: "Invalid entry - please try again!" });
+        return;
+      }
+      res.json(dbUserInfo);
+    })
+    .catch((err) => res.json(err));
+});
 // ROUTE #10 - END //
 
 // ROUTE #11 - Update a thought by its id //
