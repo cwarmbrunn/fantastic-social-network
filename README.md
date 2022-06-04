@@ -19,7 +19,7 @@ This is not a deployed live site - please test routes via Insomnia.
 
 - JavaScript
 - Mongoose
-- Express
+- Express.js
 
 ---
 

@@ -44,7 +44,7 @@ app.post("/api/users", ({ body }, res) => {
 app.get("/api/users", (req, res) => {
   // Use the "find()" method to get all of the users in the database
   // Remember that empty curly braces will return everything inside of the find() method
-  User.find({})
+  User.find()
     .then((dbUserInfo) => {
       // If statement if user information is not found
       if (!dbUserInfo) {
@@ -125,7 +125,7 @@ app.delete("/api/users/:userId/friends/:friendId", ({ params }, res) => {
       res.status(404).json({ message: "No user found with that ID!" });
       return;
     }
-    res.json
+    res.json;
   });
 });
 // ROUTE #7 - END //

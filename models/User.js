@@ -1,6 +1,9 @@
 // Require Schema and Model
 const { Schema, model } = require("mongoose");
 
+// Require Virtuals and Getters
+const opts = { toJSON: { virtuals: true, getters: true } };
+
 // Set up the User Schema
 const UserSchema = new Schema(
   {
