@@ -6,7 +6,7 @@ const mongoose = require("mongoose");
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-const { User, Thought } = require("./models");
+const { User, Thought, Reaction } = require("./models");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -44,7 +44,7 @@ app.post("/api/users", ({ body }, res) => {
 app.get("/api/users", (req, res) => {
   // Use the "find()" method to get all of the users in the database
   // Remember that empty curly braces will return everything inside of the find() method
-  User.find()
+  User.find({})
     .then((dbUserInfo) => {
       // If statement if user information is not found
       if (!dbUserInfo) {
@@ -62,6 +62,8 @@ app.get("/api/users", (req, res) => {
 app.get("/api/users/:id", ({ params }, res) => {
   // We will use the findOne() method
   User.findOne({ _id: params.id })
+    // TODO: Figure out how to populate thought and friend data
+    .populate({ path: "thought", select: "-__v" })
     .then((dbUserInfo) => {
       if (!dbUserInfo) {
         res
@@ -76,9 +78,9 @@ app.get("/api/users/:id", ({ params }, res) => {
 // ROUTE #3 - END //
 
 // ROUTE #4 - Update a User by its _id //
-app.put("/api/users/:id", ({ params, body }, res) => {
+app.put("/api/users/:id", ({ params }, res) => {
   // Use the findOneAndUpdate() method
-  User.findOneAndUpdate({ _id: params.id }, body)
+  User.findOneAndUpdate({ _id: params.id })
     .then((dbUserInfo) => {
       if (!dbUserInfo) {
         res.status(404).json({ message: "No user found with that ID!" });
@@ -92,7 +94,7 @@ app.put("/api/users/:id", ({ params, body }, res) => {
 // ROUTE #4 - END //
 
 // ROUTE #5 - Delete User by ID //
-app.delete("api/users/:id", ({ params }, res) => {
+app.delete("/api/users/:id", ({ params }, res) => {
   // Use the findOneAndDelete() method
   User.findOneAndDelete({ _id: params.id })
     .then((dbUserInfo) => {
@@ -184,11 +186,31 @@ app.post("/api/thoughts", ({ body }, res) => {
 // ROUTE #10 - END //
 
 // ROUTE #11 - Update a thought by its id //
-
+app.put("/api/thoughts/:id", ({ params }, res) => {
+  Thought.findOneAndUpdate({ _id: params.id })
+    .then((dbUserInfo) => {
+      if (!dbUserInfo) {
+        res.status(404).json({ message: "No thoughts found!" });
+        return;
+      }
+      res.json(dbUserInfo);
+    })
+    .catch((err) => res.json(err));
+});
 // ROUTE #11 - END //
 
 // ROUTE #12 - Remove a thought by its id //
-
+app.delete("/api/thoughts/:id", ({ params }, res) => {
+  Thought.findOneAndDelete({ _id: params.id })
+    .then((dbUserInfo) => {
+      if (!dbUserInfo) {
+        res.status(404).json({ message: "No thoughts found with that ID!" });
+        return;
+      }
+      res.json(dbUserInfo);
+    })
+    .catch((err) => res.json(err));
+});
 // ROUTE #12 - END //
 
 // THOUGHT ROUTES END //
@@ -196,7 +218,9 @@ app.post("/api/thoughts", ({ body }, res) => {
 // REACTION ROUTES START //
 
 // ROUTE #13 - Create a reaction stored in a single thought's reactions array field //
-
+app.post("/api/thoughts/:thoughtId/reactions", ({ body }, res) => {
+  Reaction.create(body);
+});
 // ROUTE #13 - END //
 
 // ROUTE #14 - Pull and remove a reaction by the reaction's reactionId value //
