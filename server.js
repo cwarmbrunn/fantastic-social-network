@@ -134,7 +134,40 @@ app.delete("/api/users/:userId/friends/:friendId", ({ params }, res) => {
 
 // THOUGHT ROUTES START //
 
+// ROUTE #8 - Get ALL Thoughts //
+
+// ROUTE #8 - END //
+
+// ROUTE #9 - Get a single thought by its id //
+
+// ROUTE #9 - END //
+
+// ROUTE #10 - Create a new thought //
+
+// ROUTE #10 - END //
+
+// ROUTE #11 - Update a thought by its id //
+
+// ROUTE #11 - END //
+
+// ROUTE #12 - Remove a thought by its id //
+
+// ROUTE #12 - END //
+
 // THOUGHT ROUTES END //
+
+// REACTION ROUTES START //
+
+// ROUTE #13 - Create a reaction stored in a single thought's reactions array field //
+
+// ROUTE #13 - END //
+
+// ROUTE #14 - Pull and remove a reaction by the reaction's reactionId value //
+
+// ROUTE #14 - END //
+
+// REACTION ROUTES END //
+
 // Set up App Listener
 app.listen(PORT, () => {
   console.log(`App running on port ${PORT}!🚀`);
