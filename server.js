@@ -79,9 +79,12 @@ app.get("/api/users/:id", ({ params }, res) => {
 // ROUTE #3 - END //
 
 // ROUTE #4 - Update a User by its _id //
-app.put("/api/users/:id", ({ params }, res) => {
+app.put("/api/users/:id", ({ params, body }, res) => {
   // Use the findOneAndUpdate() method
-  User.findOneAndUpdate({ _id: params.id })
+  User.findOneAndUpdate({ _id: params.id }, body, {
+    new: true,
+    runValidators: true,
+  })
     .then((dbUserInfo) => {
       if (!dbUserInfo) {
         res.status(404).json({ message: "No user found with that ID!" });

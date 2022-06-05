@@ -31,17 +31,21 @@ const UserSchema = new Schema(
       // Must Match a Valid Email
       match: [/.+\@.+\..+/, "Please input a valid email address!"],
     },
-    thoughts: {
-      // Needs to show an array of _id values referencing the Thought model
-      type: Schema.Types.ObjectId,
-      ref: "Thought",
-    },
+    thoughts: [
+      {
+        // Needs to show an array of _id values referencing the Thought model
+        type: Schema.Types.ObjectId,
+        ref: "Thought",
+      },
+    ],
 
-    friends: {
-      // Needs of _id values referencing the User model (self-reference)
-      type: Schema.Types.ObjectId,
-      ref: "User",
-    },
+    friends: [
+      {
+        // Needs of _id values referencing the User model (self-reference)
+        type: Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
   },
   opts
 );

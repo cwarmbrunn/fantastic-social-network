@@ -7,6 +7,43 @@ const opts = { toJSON: { virtuals: true, getters: true } };
 // Require Date Format
 const dateFormat = require("../utils/dateFormat");
 
+// Set up the Reaction Schema
+const reactionSchema = new Schema(
+  {
+    // We will have the following attributes for this
+    // Mongoose's ObjectId data type
+    // Default Value is set to a new ObjectId
+    reactionId: {
+      // NEED  TO CONFIRM //
+      // Use Mongoose's ObjectId data type
+      type: Schema.Types.ObjectId,
+      // Default value is set to a new ObjectId
+      default: () => new Types.ObjectId(),
+      // END CONFIRM //
+    },
+    // We will have the following attributes for this
+    // String, Required, Maximum Length of 280 characters
+    reactionBody: {
+      type: String,
+      required: true,
+      maxlength: 280,
+    },
+    // We will have the following attributes for this
+    // String, Required
+    username: {
+      type: String,
+      required: true,
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now,
+      // TODO: Use a getter method to format the timestamp on query
+      get: (createdAtVal) => dateFormat(createdAtVal),
+    },
+  },
+  opts
+);
+
 // Set up the Thought Schema
 const ThoughtSchema = new Schema(
   {
@@ -40,7 +77,7 @@ const ThoughtSchema = new Schema(
       // We want a requirement message
       required: "Please provide a username!",
     },
-    // reactions: [reactionSchema],
+    reactions: [reactionSchema],
     // TODO: Array of nested documents created with the reactionSchema
   },
   opts
