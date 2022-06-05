@@ -114,6 +114,7 @@ app.delete("/api/users/:id", ({ params }, res) => {
 
 app.post("/api/users/:userId/friends/:friendId", ({ body }, res) => {
   // Create the new friend
+  // TODO: Not sure how to add a user as a friend
 });
 
 // ROUTE #6 - END //
@@ -121,7 +122,7 @@ app.post("/api/users/:userId/friends/:friendId", ({ body }, res) => {
 // ROUTE #7 - Remove a friend from a user's friend's list //
 app.delete("/api/users/:userId/friends/:friendId", ({ params }, res) => {
   // Use the findByIdAndDelete() method
-  // Not sure if this is accurate - need to confirm
+  // TODO: Not sure if this is accurate - need to confirm
   User.findByIdAndDelete({ _id: params.id }).then((dbUserInfo) => {
     if (!dbUserInfo) {
       res.status(404).json({ message: "No user found with that ID!" });
@@ -141,11 +142,11 @@ app.delete("/api/users/:userId/friends/:friendId", ({ params }, res) => {
 app.get("/api/thoughts", (req, res) => {
   // Use the find() method to get all of the thoughts
 
-  Thought.find()
+  Thought.find({})
     .then((dbUserInfo) => {
       // Conditional if information is not found
       if (!dbUserInfo) {
-        res.status(404).json({ message: "No thoughts found - head empty!" });
+        res.status(404).json({ message: "No thoughts found!" });
         return;
       }
       res.json(dbUserInfo);
@@ -216,7 +217,6 @@ app.delete("/api/thoughts/:id", ({ params }, res) => {
 // THOUGHT ROUTES END //
 
 // REACTION ROUTES START //
-// TODO: Need to complete these //
 
 // ROUTE #13 - Create a reaction stored in a single thought's reactions array field //
 app.post("/api/thoughts/:thoughtId/reactions", ({ body }, res) => {
