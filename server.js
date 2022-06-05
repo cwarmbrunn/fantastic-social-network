@@ -64,6 +64,7 @@ app.get("/api/users/:id", ({ params }, res) => {
   User.findOne({ _id: params.id })
     // TODO: Figure out how to populate thought and friend data
     .populate({ path: "thought", select: "-__v" })
+
     .then((dbUserInfo) => {
       if (!dbUserInfo) {
         res
