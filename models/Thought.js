@@ -78,7 +78,7 @@ const ThoughtSchema = new Schema(
       required: "Please provide a username!",
     },
     reactions: [reactionSchema],
-    // TODO: Array of nested documents created with the reactionSchema
+    // Array of nested documents created with the reactionSchema
   },
   opts
 );
@@ -87,7 +87,7 @@ const ThoughtSchema = new Schema(
 // reactionCount that retrieves the length of the thought's reactions array field on query
 ThoughtSchema.virtual("reactionCount").get(function () {
   // Return the length of the reaction array field on query
-  return this.reactions?.length;
+  return this.reactions.length;
 });
 const Thought = model("Thought", ThoughtSchema);
 

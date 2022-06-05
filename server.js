@@ -62,9 +62,10 @@ app.get("/api/users", (req, res) => {
 app.get("/api/users/:id", ({ params }, res) => {
   // We will use the findOne() method
   User.findOne({ _id: params.id })
-    // TODO: Figure out how to populate thought and friend data
-    .populate({ path: "thought", select: "-__v" })
+    // Populate the Thought model data
+    .populate({ path: "Thought", select: "-__v" })
 
+    .select("-__v")
     .then((dbUserInfo) => {
       if (!dbUserInfo) {
         res
@@ -72,6 +73,7 @@ app.get("/api/users/:id", ({ params }, res) => {
           .json({ message: "No user found with that ID! Please try again." });
         return;
       }
+      console.log(dbUserInfo);
       res.json(dbUserInfo);
     })
     .catch((err) => res.json(err));
@@ -191,8 +193,11 @@ app.post("/api/thoughts", ({ body }, res) => {
 // ROUTE #10 - END //
 
 // ROUTE #11 - Update a thought by its id //
-app.put("/api/thoughts/:id", ({ params }, res) => {
-  Thought.findOneAndUpdate({ _id: params.id })
+app.put("/api/thoughts/:id", ({ params, body }, res) => {
+  Thought.findOneAndUpdate({ _id: params.id }, body, {
+    new: true,
+    runValidators: true,
+  })
     .then((dbUserInfo) => {
       if (!dbUserInfo) {
         res.status(404).json({ message: "No thoughts found!" });
