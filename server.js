@@ -216,15 +216,30 @@ app.delete("/api/thoughts/:id", ({ params }, res) => {
 // THOUGHT ROUTES END //
 
 // REACTION ROUTES START //
+// TODO: Need to complete these //
 
 // ROUTE #13 - Create a reaction stored in a single thought's reactions array field //
 app.post("/api/thoughts/:thoughtId/reactions", ({ body }, res) => {
-  Reaction.create(body);
+  Reaction.create(body)
+    .then((dbUserInfo) => res.json(dbUserInfo))
+    .catch((err) => res.json(err));
 });
 // ROUTE #13 - END //
 
 // ROUTE #14 - Pull and remove a reaction by the reaction's reactionId value //
-
+app.delete("/app/thoughts/:thoughtId/:reactionId", ({ params }, res) => {
+  // Use the findOneAndDelete() method
+  Reaction.findOneAndDelete({ _id: params.id })
+    .then((dbUserInfo) => {
+      if (!dbUserInfo) {
+        res.status(404).json({ message: "No reaction found with that ID!" });
+        return;
+      }
+      res.json(dbUserInfo);
+    })
+    // Catch Errors
+    .catch((err) => res.json(err));
+});
 // ROUTE #14 - END //
 
 // REACTION ROUTES END //
