@@ -117,12 +117,18 @@ app.delete("/api/users/:id", ({ params }, res) => {
 
 // ROUTE #6 - Add a new friend to a user's friends list //
 
-app.post("/api/users/:userId/friends/:friendId", ({ body }, res) => {
-  // Create the new friend
-  User.create(body)
+app.post("/api/users/:userId/friends/:friendId", ({ params }, res) => {
+  User.findOneAndUpdate(
+    { _id: params.userId },
+    { $addToSet: { friends: params.friendId } },
+    {
+      new: true,
+      runValidators: true,
+    }
+  )
     .then((dbUserInfo) => {
       if (!dbUserInfo) {
-        res.status(404).json({ message: "Invalid entry - please try again!" });
+        res.status(404).json({ message: "No user found!" });
         return;
       }
       res.json(dbUserInfo);
@@ -135,14 +141,18 @@ app.post("/api/users/:userId/friends/:friendId", ({ body }, res) => {
 // ROUTE #7 - Remove a friend from a user's friend's list //
 app.delete("/api/users/:userId/friends/:friendId", ({ params }, res) => {
   // Use the findByIdAndDelete() method
-  // TODO: Not sure if this is accurate - need to confirm
-  User.findByIdAndDelete({ _id: params.id }).then((dbUserInfo) => {
-    if (!dbUserInfo) {
-      res.status(404).json({ message: "No user found with that ID!" });
-      return;
-    }
-    res.json(dbUserInfo);
-  });
+  User.findOneAndUpdate(
+    { _id: params.userId },
+    { $pull: { friends: params.friendId } }
+  )
+    .then((dbUserInfo) => {
+      if (!dbUserInfo) {
+        res.status(404).json({ message: "User not found!" });
+        return;
+      }
+      res.json(dbUserInfo);
+    })
+    .catch((err) => res.json(err));
 });
 // ROUTE #7 - END //
 
