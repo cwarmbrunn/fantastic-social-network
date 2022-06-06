@@ -271,7 +271,7 @@ app.post("/api/thoughts/:thoughtId/reactions", ({ params, body }, res) => {
 // ROUTE #13 - END //
 
 // ROUTE #14 - Pull and remove a reaction by the reaction's reactionId value //
-app.delete("/app/thoughts/:thoughtId/:reactionId", ({ params }, res) => {
+app.delete("/api/thoughts/:thoughtId/:reactionId", ({ params }, res) => {
   // Use the findOneAndDelete() method
   Thought.findOneAndUpdate(
     { _id: params.thoughtId },

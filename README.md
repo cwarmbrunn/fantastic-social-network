@@ -27,6 +27,6 @@ This is not a deployed live site - please test routes via Insomnia or http://loc
 
 Use _npm i_ to install the necessary packages. Then, use npm start and test routes via Insomnia or http://localhost:3001
 
-**Screenshot:**
+**Video Walkthrough:**
 
-![]()
+Watch the video [here](https://watch.screencastify.com/v/TIlmrBRnTuQvT8GDqH2x)!
