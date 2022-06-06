@@ -252,18 +252,19 @@ app.delete("/api/thoughts/:id", ({ params }, res) => {
 // ROUTE #13 - Create a reaction stored in a single thought's reactions array field //
 app.post("/api/thoughts/:thoughtId/reactions", ({ params, body }, res) => {
   Thought.findOneAndUpdate(
+    // We want to set ID to the thought ID
     { _id: params.thoughtId },
     { $push: { reactions: body } },
     { new: true, runValidators: true }
   )
-    .then((dbUserInfo) => {
-      if (!dbUserInfo) {
-        res
-          .status(404)
-          .json({ message: "No thoughts with this ID found - try again!" });
+    .populate({ path: "reactions", select: "-__v" })
+    .select("-__v")
+    .then((dbReactionInfo) => {
+      if (!dbReactionInfo) {
+        res.status(404).json({ message: "No thoughts found with this ID!" });
         return;
       }
-      res.json(dbUserInfo);
+      res.json(dbReactionInfo);
     })
     .catch((err) => res.json(err));
 });
@@ -272,7 +273,11 @@ app.post("/api/thoughts/:thoughtId/reactions", ({ params, body }, res) => {
 // ROUTE #14 - Pull and remove a reaction by the reaction's reactionId value //
 app.delete("/app/thoughts/:thoughtId/:reactionId", ({ params }, res) => {
   // Use the findOneAndDelete() method
-  Thought.findOneAndDelete({ _id: params.id })
+  Thought.findOneAndUpdate(
+    { _id: params.thoughtId },
+    { $pull: { reactions: { reactionId: params.reactionId } } },
+    { new: true }
+  )
     .then((dbUserInfo) => {
       if (!dbUserInfo) {
         res.status(404).json({ message: "No reaction found with that ID!" });
