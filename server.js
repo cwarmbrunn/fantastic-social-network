@@ -188,12 +188,17 @@ app.get("/api/thoughts/:id", ({ params }, res) => {
 app.post("/api/thoughts", ({ body }, res) => {
   // Create the Thought
   Thought.create(body)
-    .then((dbUserInfo) => {
-      if (!dbUserInfo) {
+    .then((dbThoughtInfo) => {
+      if (!dbThoughtInfo) {
         res.status(404).json({ message: "Invalid entry - please try again!" });
         return;
       }
-      res.json(dbUserInfo);
+      User.findOneAndUpdate(
+        { _id: body.userId },
+        { $push: { thoughts: dbThoughtInfo._id } }
+      ).then((dbUserInfo) => {
+        res.json(dbUserInfo);
+      });
     })
     .catch((err) => res.json(err));
 });
