@@ -63,9 +63,8 @@ app.get("/api/users/:id", ({ params }, res) => {
   // We will use the findOne() method
   User.findOne({ _id: params.id })
     // Populate the Thought model data
-    .populate({ path: "Thought", select: "-__v" })
-
     .select("-__v")
+    .populate({ path: "thoughts", select: "-__v" })
     .then((dbUserInfo) => {
       if (!dbUserInfo) {
         res
@@ -78,7 +77,7 @@ app.get("/api/users/:id", ({ params }, res) => {
     })
     .catch((err) => res.json(err));
 });
-// ROUTE #3 - END //
+//ROUTE #3 - END //
 
 // ROUTE #4 - Update a User by its _id //
 app.put("/api/users/:id", ({ params, body }, res) => {
@@ -120,7 +119,15 @@ app.delete("/api/users/:id", ({ params }, res) => {
 
 app.post("/api/users/:userId/friends/:friendId", ({ body }, res) => {
   // Create the new friend
-  // TODO: Not sure how to add a user as a friend
+  User.create(body)
+    .then((dbUserInfo) => {
+      if (!dbUserInfo) {
+        res.status(404).json({ message: "Invalid entry - please try again!" });
+        return;
+      }
+      res.json(dbUserInfo);
+    })
+    .catch((err) => res.json(err));
 });
 
 // ROUTE #6 - END //
@@ -228,9 +235,21 @@ app.delete("/api/thoughts/:id", ({ params }, res) => {
 // REACTION ROUTES START //
 
 // ROUTE #13 - Create a reaction stored in a single thought's reactions array field //
-app.post("/api/thoughts/:thoughtId/reactions", ({ body }, res) => {
-  Reaction.create(body)
-    .then((dbUserInfo) => res.json(dbUserInfo))
+app.post("/api/thoughts/:thoughtId/reactions", ({ params, body }, res) => {
+  Thought.findOneAndUpdate(
+    { _id: params.thoughtId },
+    { $push: { reactions: body } },
+    { new: true, runValidators: true }
+  )
+    .then((dbUserInfo) => {
+      if (!dbUserInfo) {
+        res
+          .status(404)
+          .json({ message: "No thoughts with this ID found - try again!" });
+        return;
+      }
+      res.json(dbUserInfo);
+    })
     .catch((err) => res.json(err));
 });
 // ROUTE #13 - END //
@@ -238,7 +257,7 @@ app.post("/api/thoughts/:thoughtId/reactions", ({ body }, res) => {
 // ROUTE #14 - Pull and remove a reaction by the reaction's reactionId value //
 app.delete("/app/thoughts/:thoughtId/:reactionId", ({ params }, res) => {
   // Use the findOneAndDelete() method
-  Reaction.findOneAndDelete({ _id: params.id })
+  Thought.findOneAndDelete({ _id: params.id })
     .then((dbUserInfo) => {
       if (!dbUserInfo) {
         res.status(404).json({ message: "No reaction found with that ID!" });
