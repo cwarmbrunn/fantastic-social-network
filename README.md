@@ -29,4 +29,4 @@ Use _npm i_ to install the necessary packages. Then, use npm start and test rout
 
 **Video Walkthrough:**
 
-Watch the video [here](https://watch.screencastify.com/v/TIlmrBRnTuQvT8GDqH2x)!
+Watch the video [here](https://watch.screencastify.com/v/8hUoRgYGh7LW7FSCiXjF)!
